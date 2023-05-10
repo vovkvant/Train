@@ -1,8 +1,8 @@
-package com.example.springboot.transportation;
+package com.example.app.entity;
 
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class Station {
 
     private String name;
