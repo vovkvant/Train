@@ -1,10 +1,12 @@
 package com.example.app.entity;
 
-import org.hibernate.annotations.DynamicUpdate;
-import javax.persistence.*;
+import com.example.app.repository.TrainRepository;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
-@DynamicUpdate
+
 public class Train {
 
     private  @Id  @GeneratedValue Long id;
@@ -18,5 +20,30 @@ public class Train {
         this.number = number;
         this.placesNumber = placesNumber;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public int getPlacesNumber() {
+        return placesNumber;
+    }
+
+    public void setPlacesNumber(int placesNumber) {
+        this.placesNumber = placesNumber;
+    }
+
 }
 

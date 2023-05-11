@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Entity;
+import java.util.List;
 
 @Repository
 public interface TrainRepository extends JpaRepository<Train, Long> {

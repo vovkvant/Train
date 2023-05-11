@@ -14,8 +14,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @Configuration
-@ComponentScan(basePackages = { "com.example.app.*" })
-@EntityScan("com.example.app.entity.*")
+@ComponentScan(basePackages = {"com.example.app.*" })
+@EntityScan("com.example.app.entity")
 @EnableJpaRepositories
 public class TrainApplication {
 
@@ -23,14 +23,4 @@ public class TrainApplication {
 		SpringApplication.run(TrainApplication.class, args);
 	}
 
-	@Bean
-    CommandLineRunner initDatabase(TrainRepository repository) {
-
-        return args -> {
-            repository.save(new Train(123L, "234", 43));
-            repository.save(new Train(546L, "546", 56));
-            repository.save(new Train(897L, "897", 69));
-            repository.save(new Train(964L, "964", 87));
-        };
-    }
 }
