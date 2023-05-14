@@ -6,26 +6,29 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-
+@Table(name = "trains")
 public class Train {
 
-    private  @Id  @GeneratedValue Long id;
+      @Id
+      @GeneratedValue(strategy=GenerationType.AUTO) private int id;
+
     private String number;
+    @Column(name = "places_number")
     private int placesNumber;
     public Train() {
     }
 
-    public Train(Long id, String number, int placesNumber) {
+    public Train(int id, String number, int placesNumber) {
         this.id = id;
         this.number = number;
         this.placesNumber = placesNumber;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

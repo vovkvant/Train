@@ -10,20 +10,20 @@ public class ListBase {
 
         ArrayList<Train> trains = new ArrayList<>();
 
-        trains.add(new Train(123L, "234", 43));
-        trains.add(new Train(456L, "546", 89));
-        trains.add(new Train(489L, "689", 97));
+        trains.add(new Train(123, "234", 43));
+        trains.add(new Train(456, "546", 89));
+        trains.add(new Train(489, "689", 97));
 
         return trains;
     }
 
-    public static Train findTrainById(Long id) {
+    public static Train findTrainById(int id) {
 
         ArrayList<Train> trains = createTrainList();
         Train neededTrain = new Train();
         for (Train train : trains) {
-            Long currentId = train.getId();
-            if (currentId.equals(id)) {
+            int currentId = train.getId();
+            if (currentId == id) {
                 neededTrain = train;
                 break;
             }

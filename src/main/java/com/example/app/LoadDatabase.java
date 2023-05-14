@@ -16,10 +16,10 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(TrainRepository repository) {
 
         return args -> {
-            log.info("Preloading " + repository.save(new Train(123L, "234", 43)));
-            log.info("Preloading " + repository.save(new Train(546L, "546", 56)));
-            log.info("Preloading " + repository.save(new Train(897L, "897", 69)));
-            log.info("Preloading " + repository.save(new Train(964L, "964", 87)));
+            log.info("Preloading " + repository.save(new Train(546, "234", 43)));
+            log.info("Preloading " + repository.save(new Train(689, "546", 56)));
+            log.info("Preloading " + repository.save(new Train(789, "897", 69)));
+            log.info("Preloading " + repository.save(new Train(632, "964", 87)));
         };
     }
 }
