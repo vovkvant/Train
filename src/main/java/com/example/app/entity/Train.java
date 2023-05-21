@@ -6,11 +6,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "trains")
+@Table
 public class Train {
 
       @Id
-      @GeneratedValue(strategy=GenerationType.AUTO) private int id;
+      @GeneratedValue(strategy=GenerationType.AUTO)
+      private Integer id;
 
     private String number;
     @Column(name = "places_number")

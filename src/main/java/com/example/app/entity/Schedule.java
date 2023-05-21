@@ -1,31 +1,22 @@
-//package com.example.app.entity;
-//
-//import com.example.app.entity.Station;
-//import com.example.app.entity.Train;
-//import org.springframework.stereotype.Component;
-//
-//import java.util.Date;
-//
-//
-//public class Schedule {
-//    private Date date;
-//    private Train train;
-//    private Station station;
-//
-//    public void setDate(Date date) {
-//        this.date = date;
-//    }
-//
-//    public void setTrain(Train train) {
-//        this.train = train;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "Schedule{" +
-//                "date=" + date +
-//                ", train=" + train +
-//                ", station=" + station +
-//                '}';
-//    }
-//}
+package com.example.app.entity;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table
+public class Schedule {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "station_id")
+    private Integer stationId;
+    @Column(name = "train_id")
+    private Integer trainId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "time")
+    private LocalDateTime time;
+
+}

@@ -2,54 +2,38 @@ package com.example.app.controller;
 import java.util.List;
 import com.example.app.entity.Train;
 import com.example.app.repository.TrainRepository;
+import com.example.app.service.TrainService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-class TrainController {
+public class TrainController {
 
     private final TrainRepository repository;
 
-    TrainController(TrainRepository repository) {
+    private final TrainService trainService;
+
+    TrainController(TrainRepository repository, TrainService trainService) {
         this.repository = repository;
+        this.trainService = trainService;
     }
 
     @GetMapping("/trains")
     List<Train> all() {
-       return repository.findAll();
+        return trainService.findAllTrains();
     }
 
     @GetMapping("/trains/{id}")
-    public Train findOne(@PathVariable int id) {
-        return (Train) repository.findTrainById(id);
+    public Train findTrainById(@PathVariable int id) {
+        return trainService.findTrainById(id);
     }
 
-    @PostMapping(path="/trains/add") // Map ONLY POST Requests
-    public @ResponseBody String addNewTrain(@RequestParam String number, @RequestParam int placesNumber) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
-
-        Train n = new Train();
-        n.setNumber(number);
-        n.setPlacesNumber(placesNumber);
-        repository.save(n);
-
-        return "Saved";
+    @PostMapping(path="/train") // Map ONLY POST Requests
+    public @ResponseBody Train addNewTrain(@RequestBody Train train) {
+        return trainService.addNewTrain(train);
     }
 
-    @PutMapping("/trains/{id}")
-    Train replaceTrain(@RequestBody Train newTrain, @PathVariable int id) {
-
-        return repository.findById(id)
-                .map(train -> {
-                    train.setNumber(newTrain.getNumber());
-                    return repository.save(train);
-                })
-                .orElseGet(() -> {
-                    return repository.save(newTrain);
-                });
-    }
     @DeleteMapping("/trains/{id}")
-    void deleteEmployee(@PathVariable int id) {
-        repository.deleteById(id);
+    void deleteTrain(@PathVariable int id) {
+        trainService.deleteTrain(id);
     }
 }
