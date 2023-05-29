@@ -48,6 +48,15 @@ public class ScheduleService {
 //        }
         return trainsFromStation;
     }
+
+    public Boolean checkMinutesLeftBeforeTrainTime(Integer minutes,
+                                                   Integer train_id,
+                                                   Integer station_id) {
+        Iterable<ScheduleDB> scheduleStr = repository.getTrainTime(train_id, station_id);
+//        return scheduleStr.time.minusMinutes(minutes) >= LocalDateTime.now();
+        return false;
+    }
+
     public Schedule addNewScheduleItem(Schedule schedule) {
 
         Schedule sc = repository.save(schedule);

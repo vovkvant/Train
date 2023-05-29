@@ -68,4 +68,16 @@
             )
         </sql>
     </changeSet>
+    <changeSet id="table-ticketdb-creation" author="Victoria">
+        <sql>
+            CREATE TABLE IF NOT EXISTS ticketdb (
+                id SERIAL PRIMARY KEY,
+                train_id INTEGER NOT NULL,
+                start_station_id INTEGER NOT NULL,
+                end_station_id INTEGER NOT NULL,
+                places_number INTEGER NOT NULL,
+                time TIME
+                )
+        </sql>
+    </changeSet>
 </databaseChangeLog>

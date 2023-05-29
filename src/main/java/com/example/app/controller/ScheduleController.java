@@ -40,6 +40,14 @@ public class ScheduleController {
                                            @PathVariable Integer toStation_id) {
         return scheduleService.getTrainFromToStation(fromTime, toTime, fromStation_id, toStation_id);
     }
+
+    @GetMapping("/schedule/minutesleft/{train_id}/{station_id}/{minutes}")
+    Boolean checkMinutesLeftBeforeTrainTime(@PathVariable Integer minutes,
+                                            @PathVariable Integer train_id,
+                                            @PathVariable Integer station_id) {
+        return scheduleService.checkMinutesLeftBeforeTrainTime(minutes, train_id, station_id);
+    }
+
     @PostMapping(path="/schedule")
     public @ResponseBody Schedule addNewScheduleItem(@RequestBody Schedule schedule) {
         return scheduleService.addNewScheduleItem(schedule);

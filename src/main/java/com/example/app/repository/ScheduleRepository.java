@@ -53,4 +53,14 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             "  AND sc.time > :trainTime")
     Iterable<ScheduleDB> getTrainToStation(@Param("toStation_id") Integer toStation_id,
                                            @Param("trainTime") LocalTime fromTime);
+
+    @Query("Select s.name as station_name,\n" +
+            "       t.number as train_name, sc.time\n" +
+            "        from  Schedule as sc join Station as s\n" +
+            "        on  sc.stationId = s.id\n" +
+            "        join Train as t on t.id = sc.trainId\n" +
+            "        WHERE sc.stationId = :station_id\n" +
+            "        AND sc.trainId = :train_id")
+    Iterable<ScheduleDB> getTrainTime(@Param("train_id") Integer train_id,
+                                      @Param("station_id") Integer station_id);
 }
