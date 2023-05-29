@@ -6,9 +6,8 @@ import com.example.app.repository.PassengerRepository;
 import com.example.app.service.PassengerService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class PassengerController {
@@ -20,25 +19,28 @@ public class PassengerController {
         this.repository = repository;
         this.passengerService = passengerService;
     }
-    @GetMapping("/passengers")
+
+    @GetMapping("/passenger/all")
     List<Passenger> all() {
         return passengerService.findAllPassengers();
     }
 
-    @GetMapping("/passengers/{id}")
+    @GetMapping("/passenger/{id}")
     public Passenger findPassengerById(@PathVariable int id) {
         return passengerService.findPassengerById(id);
     }
 
-    @GetMapping("/passengers/birthDate/{birthDate}")
-    public Passenger findPassengerByBirthDate(@PathVariable String birthDate) {
-//        return passengerService.findPassengerByBirthDate(birthDate);
+    @GetMapping("/passenger/?birthDate={birthDate}")
+    public Iterable<Passenger> findPassengerByBirthDate(@PathVariable CharSequence birthDate) {
         return passengerService.findPassengerByBirthDateQuery(birthDate);
     }
 
-    @GetMapping("/passengers/{name}/{surname}")
-    public List<Object> findPassengersByNameAfterAndSurname(@PathVariable String name, @PathVariable String surname) {
-        return passengerService.findPassengersByNameAfterAndSurname(name, surname);
+    // как сейчас не работает
+    // и так тоже
+//    @GetMapping("/passenger/?name={name}&surname={surname}")
+    @GetMapping("/passenger/?name=name&surname=surname")
+    public Iterable<Passenger> findPassengersByNameAndSurname(@PathVariable String name, @PathVariable String surname) {
+        return passengerService.findPassengersByNameAndSurname(name, surname);
     }
 
     @PostMapping(path="/passenger") // Map ONLY POST Requests
@@ -46,7 +48,7 @@ public class PassengerController {
         return passengerService.addNewPassenger(passenger);
     }
 
-    @DeleteMapping("/passengers/{id}")
+    @DeleteMapping("/passenger/{id}")
     void deletePassenger(@PathVariable int id) {
         passengerService.deletePassenger(id);
     }

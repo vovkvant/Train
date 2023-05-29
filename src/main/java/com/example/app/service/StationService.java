@@ -15,7 +15,7 @@ public class StationService {
 
     @Autowired
     private StationRepository repository;
-    private Station station;
+    Station station;
     public StationService() {}
     public List<Station> findAllStations() {
         return repository.findAll();

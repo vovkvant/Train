@@ -1,5 +1,7 @@
 package com.example.app.service;
 
+import com.example.app.controller.TicketController;
+import com.example.app.entity.Passenger;
 import com.example.app.entity.Schedule;
 import com.example.app.entity.Ticket;
 import com.example.app.repository.ScheduleRepository;
@@ -16,10 +18,10 @@ public class TicketService {
 
     @Autowired
     private TicketRepository repository;
-    private Ticket ticket;
+    Ticket ticket;
     public TicketService() {};
 
-    public List<Object> getAllRegisteredPassengers() {
+    public Iterable<Ticket> getAllRegisteredPassengers() {
         return  repository.getAllRegisteredPassengers();
     }
 }

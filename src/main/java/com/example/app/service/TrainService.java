@@ -13,7 +13,7 @@ public class TrainService {
 
     @Autowired
     private TrainRepository repository;
-    private Train train;
+    Train train;
     public TrainService() {
     }
     public List<Train> findAllTrains() {

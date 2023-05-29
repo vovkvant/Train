@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,7 +17,7 @@ public class PassengerService {
 
     @Autowired
     private PassengerRepository repository;
-    private Passenger passenger;
+    Passenger passenger;
     public PassengerService() {}
     public List<Passenger> findAllPassengers() { return repository.findAll(); }
     public Passenger findPassengerById(int id) {
@@ -26,13 +27,15 @@ public class PassengerService {
         Passenger p = repository.save(passenger);
         return p;
     }
-    public Passenger findPassengerByBirthDate(LocalDate birthDate) {
+    public Passenger findPassengerByBirthDate(LocalDateTime birthDate) {
         return repository.findPassengerByBirthDate(birthDate);
     }
-    public Passenger findPassengerByBirthDateQuery(String birthDate) {
-      return  repository.findPassengerByBirthDateQuery(birthDate);
+    public Iterable<Passenger> findPassengerByBirthDateQuery(CharSequence birthDate) {
+        LocalDate parsedBD = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        LocalDateTime birthDateTime = parsedBD.atStartOfDay();
+        return  repository.findPassengerByBirthDateQuery(birthDateTime);
     }
-    public List<Object> findPassengersByNameAfterAndSurname(String name, String surname) {
+    public Iterable<Passenger> findPassengersByNameAndSurname(String name, String surname) {
         return repository.findPassengerByNameAndSurname(name, surname);
     }
     public void deletePassenger(int id) {

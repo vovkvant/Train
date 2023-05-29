@@ -16,12 +16,12 @@ public class StationController {
         this.stationService = stationService;
     }
 
-    @GetMapping("/stations")
+    @GetMapping("/station/all")
     List<Station> all() {
         return stationService.findAllStations();
     }
 
-    @GetMapping("/stations/{id}")
+    @GetMapping("/station/{id}")
     public Station findStationById(@PathVariable int id) {
         return stationService.findStationById(id);
     }
@@ -31,7 +31,7 @@ public class StationController {
         return stationService.addNewStation(station);
     }
 
-    @DeleteMapping("/stations/{id}")
+    @DeleteMapping("/station/{id}")
     void deleteStation(@PathVariable int id) {
         stationService.deleteStation(id);
     }

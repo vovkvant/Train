@@ -1,5 +1,7 @@
 package com.example.app.controller;
 
+import com.example.app.entity.Passenger;
+import com.example.app.entity.Ticket;
 import com.example.app.repository.TicketRepository;
 import com.example.app.service.TicketService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +19,8 @@ public class TicketController {
         this.repository = repository;
         this.ticketService = ticketService;
     }
-    @GetMapping("/registered")
-    List<Object> getAllRegisteredPassengers() {
+    @GetMapping("/ticket/all")
+    Iterable<Ticket> getAllRegisteredPassengers() {
        return ticketService.getAllRegisteredPassengers();
     }
 }

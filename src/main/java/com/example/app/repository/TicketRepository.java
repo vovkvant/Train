@@ -1,5 +1,6 @@
 package com.example.app.repository;
 
+import com.example.app.entity.Passenger;
 import com.example.app.entity.Ticket;
 import com.example.app.entity.Train;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +19,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
         "on  t.trainId = tr.id\n" +
         "join Passenger as p on p.id = t.passengerId\n" +
         "\n")
-    List<Object> getAllRegisteredPassengers();
+    Iterable<Ticket> getAllRegisteredPassengers();
 }

@@ -2,7 +2,7 @@ package com.example.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table
@@ -10,13 +10,22 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    Integer id;
     @Column(name = "station_id")
-    private Integer stationId;
+    Integer stationId;
     @Column(name = "train_id")
-    private Integer trainId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    Integer trainId;
+    @JsonFormat(pattern = "HH:mm:ss")
     @Column(name = "time")
-    private LocalDateTime time;
+    LocalTime time;
 
+    public Schedule() {
+    }
+
+    public Schedule(Integer id, Integer stationId, Integer trainId, LocalTime time) {
+        this.id = id;
+        this.stationId = stationId;
+        this.trainId = trainId;
+        this.time = time;
+    }
 }

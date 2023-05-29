@@ -31,16 +31,26 @@
                 )
         </sql>
     </changeSet>
-    <changeSet id="table-schedule-creation" author="Victoria">
+    <changeSet id="schedule-creation" author="Victoria">
         <sql>
             CREATE TABLE IF NOT EXISTS schedule (
             id SERIAL PRIMARY KEY,
             station_id INTEGER NOT NULL,
             train_id INTEGER NOT NULL,
-            time TIMESTAMP(0),
+            time TIME,
             FOREIGN KEY (station_id) REFERENCES station(id),
             FOREIGN KEY (train_id) REFERENCES train(id)
             )
+        </sql>
+    </changeSet>
+    <changeSet id="scheduledb-creation" author="Victoria">
+        <sql>
+            CREATE TABLE IF NOT EXISTS scheduledb (
+            id SERIAL PRIMARY KEY,
+            train_name VARCHAR(500),
+            station_name VARCHAR(500),
+            time TIME
+                )
         </sql>
     </changeSet>
     <changeSet id="table-ticket-creation" author="Victoria">

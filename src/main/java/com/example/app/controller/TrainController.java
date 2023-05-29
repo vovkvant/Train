@@ -17,12 +17,12 @@ public class TrainController {
         this.trainService = trainService;
     }
 
-    @GetMapping("/trains")
+    @GetMapping("/train/all")
     List<Train> all() {
         return trainService.findAllTrains();
     }
 
-    @GetMapping("/trains/{id}")
+    @GetMapping("/train/{id}")
     public Train findTrainById(@PathVariable int id) {
         return trainService.findTrainById(id);
     }
@@ -32,7 +32,7 @@ public class TrainController {
         return trainService.addNewTrain(train);
     }
 
-    @DeleteMapping("/trains/{id}")
+    @DeleteMapping("/train/{id}")
     void deleteTrain(@PathVariable int id) {
         trainService.deleteTrain(id);
     }
