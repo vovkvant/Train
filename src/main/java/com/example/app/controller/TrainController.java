@@ -1,5 +1,7 @@
 package com.example.app.controller;
 import java.util.List;
+import java.util.Optional;
+
 import com.example.app.entity.Train;
 import com.example.app.repository.TrainRepository;
 import com.example.app.service.TrainService;
@@ -23,7 +25,7 @@ public class TrainController {
     }
 
     @GetMapping("/train/{id}")
-    public Train findTrainById(@PathVariable int id) {
+    public Optional<Train> findTrainById(@PathVariable int id) {
         return trainService.findTrainById(id);
     }
 

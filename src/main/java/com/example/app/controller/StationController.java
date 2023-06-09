@@ -5,6 +5,7 @@ import com.example.app.repository.StationRepository;
 import com.example.app.service.StationService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StationController {
@@ -22,7 +23,7 @@ public class StationController {
     }
 
     @GetMapping("/station/{id}")
-    public Station findStationById(@PathVariable int id) {
+    public Optional<Station> findStationById(@PathVariable int id) {
         return stationService.findStationById(id);
     }
 

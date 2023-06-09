@@ -1,9 +1,11 @@
 package com.example.app.entity;
 
 import jakarta.persistence.*;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 @Entity
 @Table
+@ToString
 public class Station {
 
     @Id

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-@Table
+@Table(name = "ticketdb")
 public class TicketDB {
 
     @Id

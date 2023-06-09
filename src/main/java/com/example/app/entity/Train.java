@@ -2,11 +2,13 @@ package com.example.app.entity;
 
 import com.example.app.repository.TrainRepository;
 import jakarta.persistence.*;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Table
+@ToString
 public class Train {
 
       @Id

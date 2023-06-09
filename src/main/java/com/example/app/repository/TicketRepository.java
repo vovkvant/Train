@@ -25,24 +25,24 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
     // Iterable<Ticket> buyTicket();
     //
-    @Query("SELECT t.id as id, t.train_id as train_id, " +
-            "t.start_station_id as start_station_id, " +
-            "t.end_station_id as end_station_id, " +
-            "t.places_number as places_number FROM ticketdb as t\n" +
-            "WHERE t.train_id = :train_id\n" +
-            "AND t.start_station_id = :station_id\n" +
-            "AND t.time = :time")
-    Boolean checkPlacesLeft(@Param("station_id") Integer station_id,
-                                       @Param("train_id") Integer train_id,
-                                       @Param("time") CharSequence time);
+//    @Query("SELECT t.id as id, t.train_id as train_id, " +
+//            "t.start_station_id as start_station_id, " +
+//            "t.end_station_id as end_station_id, " +
+//            "t.places_number as places_number FROM ticketdb as t\n" +
+//            "WHERE t.train_id = :train_id\n" +
+//            "AND t.start_station_id = :station_id\n" +
+//            "AND t.time = :time")
+//    Boolean checkPlacesLeft(@Param("station_id") Integer station_id,
+//                                       @Param("train_id") Integer train_id,
+//                                       @Param("time") CharSequence time);
 
 
-    @Query("UPDATE ticketdb as t\n" +
-            "SET t.places_number = t.places_number - 1.0\n" +
-            "WHERE t.train_id = :train_id\n" +
-            "AND t.start_station_id = :station_id\n" +
-            "AND t.time = :time")
-    void updatePlacesLeft(@Param("station_id") Integer station_id,
-                          @Param("train_id") Integer train_id,
-                          @Param("time") CharSequence time);
+//    @Query("UPDATE ticketdb as t\n" +
+//            "SET t.places_number = t.places_number - 1.0\n" +
+//            "WHERE t.train_id = :train_id\n" +
+//            "AND t.start_station_id = :station_id\n" +
+//            "AND t.time = :time")
+//    void updatePlacesLeft(@Param("station_id") Integer station_id,
+//                          @Param("train_id") Integer train_id,
+//                          @Param("time") CharSequence time);
 }

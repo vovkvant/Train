@@ -43,6 +43,6 @@ public class TicketService {
     }
 
     public void updatePlacesLeft(Integer station_id, Integer train_id, CharSequence time) {
-        repository.updatePlacesLeft(station_id, train_id, time);
+//        repository.updatePlacesLeft(station_id, train_id, time);
     }
 }

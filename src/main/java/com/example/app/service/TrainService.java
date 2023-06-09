@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 public class TrainService {
@@ -20,7 +22,7 @@ public class TrainService {
         return repository.findAll();
     }
 
-    public Train findTrainById(int id) {
+    public Optional<Train> findTrainById(int id) {
         return repository.findTrainById(id);
     }
     public Train addNewTrain(Train train) {
