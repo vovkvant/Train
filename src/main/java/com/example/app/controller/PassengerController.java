@@ -1,5 +1,6 @@
 package com.example.app.controller;
 
+import com.example.app.dto.PassengerDto;
 import com.example.app.entity.Passenger;
 import com.example.app.entity.Train;
 import com.example.app.repository.PassengerRepository;
@@ -30,22 +31,16 @@ public class PassengerController {
         return passengerService.findPassengerById(id);
     }
 
-    @GetMapping("/passenger/?birthDate={birthDate}")
-    public Iterable<Passenger> findPassengerByBirthDate(@PathVariable CharSequence birthDate) {
-        return passengerService.findPassengerByBirthDateQuery(birthDate);
+    @GetMapping("/passenger/find")
+    public List<Passenger> findPassengerByNameAndSurnameAndBirthDate(@RequestParam String name,
+                                                                     @RequestParam String surname,
+                                                                     @RequestParam CharSequence birthDate) {
+        return passengerService.findPassengerByNameAndSurnameAndBirthDate(name, surname, birthDate);
     }
 
-    // как сейчас не работает
-    // и так тоже
-//    @GetMapping("/passenger/?name={name}&surname={surname}")
-    @GetMapping("/passenger/?name=name&surname=surname")
-    public Iterable<Passenger> findPassengersByNameAndSurname(@PathVariable String name, @PathVariable String surname) {
-        return passengerService.findPassengersByNameAndSurname(name, surname);
-    }
-
-    @PostMapping(path="/passenger") // Map ONLY POST Requests
-    public @ResponseBody Passenger addNewTrain(@RequestBody Passenger passenger) {
-        return passengerService.addNewPassenger(passenger);
+    @PostMapping(path="/passenger")
+    public @ResponseBody Passenger addNewPassenger(@RequestBody PassengerDto passengerDto) {
+        return passengerService.addNewPassenger(passengerDto);
     }
 
     @DeleteMapping("/passenger/{id}")

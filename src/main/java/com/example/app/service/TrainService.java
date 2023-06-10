@@ -26,8 +26,13 @@ public class TrainService {
         return repository.findTrainById(id);
     }
     public Train addNewTrain(Train train) {
-        Train t = repository.save(train);
-        return t;
+
+        List<Train> trains = repository.findTrainByNumber(train.getNumber());
+        if (trains.size() == 0) {
+            return repository.save(train);
+        } else {
+            return trains.get(1);
+        }
     }
     public void deleteTrain(int id) {
         repository.deleteById(id);

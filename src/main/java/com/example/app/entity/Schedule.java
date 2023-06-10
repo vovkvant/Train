@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Table
 public class Schedule {
 
@@ -20,41 +21,31 @@ public class Schedule {
     Integer id;
 
     @ManyToOne
-    @JoinColumn(name="station_id", nullable=false)
+    @JoinColumn(name = "station_id", nullable = false)
     private Station station;
 
     @ManyToOne
-    @JoinColumn(name="train_id", nullable=false)
+    @JoinColumn(name = "train_id", nullable = false)
     private Train train;
 
     @NotNull
-    @JsonFormat(pattern = "HH:mm:ss")
-    @Column(name = "time")
-    LocalTime time;
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss")
+    @Column(name = "departure_time")
+    LocalDateTime departureTime;
 
-    public Integer getId() {
-        return id;
+    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss")
+    @Column(name = "arrival_time")
+    LocalDateTime arrivalTime;
+
+    @NotNull
+    Integer places_left;
+
+    public Integer getPlaces_left() {
+        return places_left;
     }
 
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
-    public Train getTrain() {
-        return train;
-    }
-
-    @Override
-    public String toString() {
-        return "Schedule{" +
-                "id=" + id +
-                ", station=" + station.toString() +
-                ", train=" + train.toString() +
-                ", time=" + time +
-                '}';
+    public void setPlaces_left(Integer places_left) {
+        this.places_left = places_left;
     }
 }

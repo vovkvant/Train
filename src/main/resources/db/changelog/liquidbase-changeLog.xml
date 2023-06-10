@@ -13,6 +13,13 @@
         )
       </sql>
     </changeSet>
+    <changeSet id="default-train-creation-1" author="Victoria">
+        <sql>
+            INSERT INTO train (id, number, places_number) VALUES(1, 'A12345', 65);
+            INSERT INTO train (id, number, places_number) VALUES(2, 'B12345', 85);
+            INSERT INTO train (id, number, places_number) VALUES(3, 'C12343', 66);
+        </sql>
+    </changeSet>
     <changeSet id="station-table-creation" author="Victoria">
         <sql>
             CREATE TABLE IF NOT EXISTS station (
@@ -21,39 +28,56 @@
                 )
         </sql>
     </changeSet>
-    <changeSet id="passenger-table-creation" author="Victoria">
+    <changeSet id="default-station-creation-1" author="Victoria">
+        <sql>
+            INSERT INTO station (id, name) VALUES(1, 'Station 1');
+            INSERT INTO station (id, name) VALUES(2, 'Station 2');
+            INSERT INTO station (id, name) VALUES(3, 'Station 3');
+        </sql>
+    </changeSet>
+    <changeSet id="passenger-table-creation-2" author="Victoria">
         <sql>
             CREATE TABLE IF NOT EXISTS passenger (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100),
                 surname VARCHAR(100),
-                birth_date TIMESTAMP(0)
+                birth_date DATE
                 )
         </sql>
     </changeSet>
-    <changeSet id="schedule-creation" author="Victoria">
+    <changeSet id="default-passenger-creation-3" author="Victoria">
+        <sql>
+            INSERT INTO passenger (id, name, surname, birth_date) VALUES(1, 'Ivan', 'Ivanov', '2005-05-12');
+            INSERT INTO passenger (id, name, surname, birth_date) VALUES(2, 'Maria', 'Brown', '2001-01-12');
+            INSERT INTO passenger (id, name, surname, birth_date) VALUES(3, 'John', 'Galt', '1960-05-12');
+        </sql>
+    </changeSet>
+    <changeSet id="schedule-creation-2" author="Victoria">
         <sql>
             CREATE TABLE IF NOT EXISTS schedule (
             id SERIAL PRIMARY KEY,
             station_id INTEGER NOT NULL,
             train_id INTEGER NOT NULL,
-            time TIME,
+            arrivalTime DATETIME,
+            departureTime DATETIME,
             FOREIGN KEY (station_id) REFERENCES station(id),
             FOREIGN KEY (train_id) REFERENCES train(id)
             )
         </sql>
     </changeSet>
-    <changeSet id="scheduledb-creation" author="Victoria">
+    <changeSet id="scheduledb-creation-3" author="Victoria">
         <sql>
             CREATE TABLE IF NOT EXISTS scheduledb (
             id SERIAL PRIMARY KEY,
             train_name VARCHAR(500),
             station_name VARCHAR(500),
-            time TIME
+            arrivalTime DATETIME,
+            departureTime DATETIME,
+            places_left INTEGER
                 )
         </sql>
     </changeSet>
-    <changeSet id="table-ticket-creation" author="Victoria">
+    <changeSet id="table-ticket-creation-5" author="Victoria">
         <sql>
             CREATE TABLE IF NOT EXISTS ticket (
             id SERIAL PRIMARY KEY,
@@ -61,6 +85,8 @@
             passenger_id INTEGER NOT NULL,
             start_station_id INTEGER NOT NULL,
             end_station_id INTEGER NOT NULL,
+            departure_time DATETIME,
+            arrival_time DATETIME,
             FOREIGN KEY (train_id) REFERENCES train(id),
             FOREIGN KEY (passenger_id) REFERENCES passenger(id),
             FOREIGN KEY (start_station_id) REFERENCES station(id),
@@ -68,7 +94,7 @@
             )
         </sql>
     </changeSet>
-    <changeSet id="table-ticketdb-creation" author="Victoria">
+    <changeSet id="table-ticketdb-creation-3" author="Victoria">
         <sql>
             CREATE TABLE IF NOT EXISTS ticketdb (
                 id SERIAL PRIMARY KEY,
@@ -76,7 +102,8 @@
                 start_station_id INTEGER NOT NULL,
                 end_station_id INTEGER NOT NULL,
                 places_number INTEGER NOT NULL,
-                time TIME
+                departureTime DATETIME,
+                arrivalTime DATETIME
                 )
         </sql>
     </changeSet>

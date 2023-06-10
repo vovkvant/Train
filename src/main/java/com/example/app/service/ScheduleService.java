@@ -69,46 +69,39 @@ public class ScheduleService {
         return schedules;
     }
 
-    public List <ScheduleDB> getTrainFromToStation(CharSequence fromTime, CharSequence toTime,
+    public List <Train> getTrainFromToStation(CharSequence fromTime, CharSequence toTime,
                                                   Integer fromStation_id, Integer toStation_id) {
 
-        LocalTime localFromTime = LocalTime.parse(fromTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
-        LocalTime localToTime = LocalTime.parse(toTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
+        LocalDateTime localFromTime = LocalDateTime.parse(fromTime, DateTimeFormatter.ofPattern("yyyy-MM-dd@HH:mm:ss"));
+        LocalDateTime localToTime = LocalDateTime.parse(toTime, DateTimeFormatter.ofPattern("yyyy-MM-dd@HH:mm:ss"));
 
-        List<ScheduleDB> trainsFromStation = scheduleDBRepository.getTrainToStation(fromStation_id, localFromTime);
+        List<Train> trainsFromStation = scheduleDBRepository.getTrainFromStation(fromStation_id, localFromTime, localToTime);
 
-        List<ScheduleDB> trainsToStation = new ArrayList<>();
+        List<Train> trainsToStation = scheduleDBRepository.getTrainToStation(toStation_id, localFromTime);
 
-        // поиск поезда до конечной станции после времени первого поезда, пытаемся найти тот же поезд
-        for (ScheduleDB scheduleStr : trainsFromStation) {
-            LocalTime localTrainTime = scheduleStr.getTime();
-            List<ScheduleDB> trains = scheduleDBRepository.findTrainToStation(toStation_id, localTrainTime, scheduleStr.getTrain_name());
-            trainsToStation.addAll(trains);
-        }
-
-        // это по идее пересадка
-        if (trainsToStation.size() == 0) {
-            for (ScheduleDB scheduleStr : trainsFromStation) {
-                LocalTime localTrainTime = scheduleStr.getTime();
-                List<ScheduleDB> trains = scheduleDBRepository.getTrainToStation(toStation_id, localTrainTime);
-                trainsToStation.addAll(trains);
-            }
-        }
-
-        trainsToStation.addAll(trainsFromStation);
+        trainsFromStation.retainAll(trainsToStation);
 
         return trainsToStation;
 
     }
 
+    public Boolean checkMinutesLeftBeforeTrainTime(Integer minutes,
+                                                   Integer train_id,
+                                                   Integer station_id) {
 
-//    public Boolean checkMinutesLeftBeforeTrainTime(Integer minutes,
-//                                                   Integer train_id,
-//                                                   Integer station_id) {
-//        Iterable<ScheduleDB> scheduleStr = repository.getTrainTime(train_id, station_id);
-////        return scheduleStr.time.minusMinutes(minutes) >= LocalDateTime.now();
-//        return false;
-//    }
+        Optional<Train> train = trainRepository.findTrainById(train_id);
+        Optional<Station> station = stationRepository.findStationById(station_id);
+
+        boolean response = false;
+
+        List<Schedule> schedule = scheduleRepository.findScheduleByTrainAndStation(train, station);
+        for (Schedule elem: schedule) {
+            if (elem.getArrivalTime().isAfter(LocalDateTime.now().plusMinutes(minutes))) {
+                response = true;
+            }
+        }
+        return response;
+    }
 
     public Schedule addNewScheduleItem(ScheduleDto scheduleDto)  {
 
@@ -121,18 +114,18 @@ public class ScheduleService {
             Schedule schedule = Schedule.builder()
                     .train(train)
                     .station(station)
-                    .time(scheduleDto.getTime())
+                    .departureTime(scheduleDto.getDepartureTime())
+                    .arrivalTime(scheduleDto.getArrivalTime())
+                    .places_left(train.getPlacesNumber())
                     .build();
 
             logger.info("Schedule to save: " + schedule.toString());
 
             return scheduleRepository.save(schedule);
         } else {
-
             logger.info("Schedule item: " + scheduleDto.toString() + " already exists");
             throw (new BusinessException(ExceptionMessage.OBJECT_ALREADY_EXISTS, ErrorCode.OBJECT_ALREADY_EXISTS));
         }
-
     }
 
     public void deleteScheduleItem(Integer id)  {
@@ -153,9 +146,9 @@ public class ScheduleService {
 
        Station station = getStationByDto(scheduleDto);
        Train train = getTrainByDto(scheduleDto);
-       List<Schedule> scheduleList = scheduleRepository.findScheduleByStationAndTrainAndTime(station, train, scheduleDto.getTime());
+       List<Schedule> scheduleList = scheduleRepository.findScheduleByStationAndTrainAndDepartureTime(station, train, scheduleDto.getDepartureTime());
 
-        return scheduleList;
+       return scheduleList;
     }
 
     public Station getStationByDto(ScheduleDto scheduleDto) {

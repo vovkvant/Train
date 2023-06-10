@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class Station {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String name;
     public Station() {

@@ -26,8 +26,14 @@ public class StationService {
         return repository.findStationById(id);
     }
     public Station addNewStation(Station station) {
-        Station s = repository.save(station);
-        return s;
+
+        List<Station> stations = repository.findStationByName(station.getName());
+        if (stations.size() == 0) {
+            return repository.save(station);
+        } else {
+            // исключение
+            return stations.get(1);
+        }
     }
     public void deleteStation(int id) {
         repository.deleteById(id);

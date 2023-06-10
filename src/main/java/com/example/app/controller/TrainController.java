@@ -29,7 +29,7 @@ public class TrainController {
         return trainService.findTrainById(id);
     }
 
-    @PostMapping(path="/train") // Map ONLY POST Requests
+    @PostMapping(path="/train")
     public @ResponseBody Train addNewTrain(@RequestBody Train train) {
         return trainService.addNewTrain(train);
     }

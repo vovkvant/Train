@@ -1,6 +1,8 @@
 package com.example.app.service;
 
+import com.example.app.dto.PassengerDto;
 import com.example.app.entity.Passenger;
+import com.example.app.entity.Schedule;
 import com.example.app.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,20 +25,32 @@ public class PassengerService {
     public Passenger findPassengerById(int id) {
         return repository.findPassengerById(id);
     }
-    public Passenger addNewPassenger(Passenger passenger) {
-        Passenger p = repository.save(passenger);
-        return p;
+    public Passenger addNewPassenger(PassengerDto passengerDto) {
+
+        String name = passengerDto.getName();
+        String surname = passengerDto.getSurname();
+        LocalDateTime birthDate = passengerDto.getBirthDate();
+
+        List<Passenger> passengersDB = repository.findPassengerByNameAndSurnameAndBirthDate(name, surname, birthDate);
+
+        if (passengersDB.size() == 0) {
+
+            Passenger passenger = Passenger.builder()
+                    .name(name)
+                    .surname(surname)
+                    .birthDate(birthDate)
+                    .build();
+            return repository.save(passenger);
+        } else {
+            // добавить исключение
+            return passengersDB.get(1);
+        }
+
     }
-    public Passenger findPassengerByBirthDate(LocalDateTime birthDate) {
-        return repository.findPassengerByBirthDate(birthDate);
-    }
-    public Iterable<Passenger> findPassengerByBirthDateQuery(CharSequence birthDate) {
+    public List<Passenger> findPassengerByNameAndSurnameAndBirthDate(String name, String surname, CharSequence birthDate) {
         LocalDate parsedBD = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyyMMdd"));
         LocalDateTime birthDateTime = parsedBD.atStartOfDay();
-        return  repository.findPassengerByBirthDateQuery(birthDateTime);
-    }
-    public Iterable<Passenger> findPassengersByNameAndSurname(String name, String surname) {
-        return repository.findPassengerByNameAndSurname(name, surname);
+        return repository.findPassengerByNameAndSurnameAndBirthDate(name, surname, birthDateTime);
     }
     public void deletePassenger(int id) {
         repository.deleteById(id);
