@@ -7,6 +7,5 @@ import java.util.Optional;
 
 public interface TrainRepository extends JpaRepository<Train, Integer> {
     Optional<Train> findTrainById(int id);
-
     List<Train> findTrainByNumber(String number);
 }

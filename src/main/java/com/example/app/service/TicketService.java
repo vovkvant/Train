@@ -26,17 +26,8 @@ public class TicketService {
     private ScheduleService scheduleService;
 
     @Autowired
-    private ScheduleDBRepository scheduleDBRepository;
-
-    @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    @Autowired
-    private PassengerRepository passengerRepository;
-
-    @Autowired
     private PassengerService passengerService;
-    Ticket ticket;
+
     public TicketService() {};
 
     public Iterable<Ticket> getAllRegisteredPassengers() {
@@ -46,7 +37,7 @@ public class TicketService {
     public void buyTicket(PassengerDto passengerDto, Integer scheduleId,
                           Integer end_station_id, CharSequence arrivalTime) {
 
-        Optional<Schedule> schedule = scheduleRepository.findById(scheduleId);
+        Optional<Schedule> schedule = scheduleService.findById(scheduleId);
 
         Schedule scheduleItem = schedule.get();
 
@@ -58,7 +49,7 @@ public class TicketService {
         }
         Integer train_id = scheduleItem.getTrain().getId();
         Integer station_id = scheduleItem.getStation().getId();
-        List <Passenger> passengers = passengerRepository.findPassengerByNameAndSurnameAndBirthDate(
+        List <Passenger> passengers = passengerService.findPassengerByNameAndSurnameAndBirthDateAsDate(
                 passengerDto.getName(),
                 passengerDto.getSurname(),
                 passengerDto.getBirthDate());
@@ -91,5 +82,4 @@ public class TicketService {
         scheduleItem.setPlaces_left(places_left - 1);
 
     }
-
 }

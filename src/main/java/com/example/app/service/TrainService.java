@@ -15,7 +15,6 @@ public class TrainService {
 
     @Autowired
     private TrainRepository repository;
-    Train train;
     public TrainService() {
     }
     public List<Train> findAllTrains() {

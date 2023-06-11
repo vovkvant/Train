@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface StationRepository  extends JpaRepository<Station, Integer> {
     Optional<Station> findStationById(int id);
-
     List<Station> findStationByName(String name);
 }

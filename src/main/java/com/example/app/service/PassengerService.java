@@ -19,7 +19,6 @@ public class PassengerService {
 
     @Autowired
     private PassengerRepository repository;
-    Passenger passenger;
     public PassengerService() {}
     public List<Passenger> findAllPassengers() { return repository.findAll(); }
     public Passenger findPassengerById(int id) {
@@ -45,12 +44,14 @@ public class PassengerService {
             // добавить исключение
             return passengersDB.get(1);
         }
-
     }
     public List<Passenger> findPassengerByNameAndSurnameAndBirthDate(String name, String surname, CharSequence birthDate) {
         LocalDate parsedBD = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyyMMdd"));
         LocalDateTime birthDateTime = parsedBD.atStartOfDay();
         return repository.findPassengerByNameAndSurnameAndBirthDate(name, surname, birthDateTime);
+    }
+    public List<Passenger> findPassengerByNameAndSurnameAndBirthDateAsDate(String name, String surname, LocalDateTime birthDate) {
+        return repository.findPassengerByNameAndSurnameAndBirthDate(name, surname, birthDate);
     }
     public void deletePassenger(int id) {
         repository.deleteById(id);

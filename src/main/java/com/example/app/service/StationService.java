@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,6 @@ public class StationService {
 
     @Autowired
     private StationRepository repository;
-    Station station;
     public StationService() {}
     public List<Station> findAllStations() {
         return repository.findAll();
@@ -35,6 +35,10 @@ public class StationService {
             return stations.get(1);
         }
     }
+    public Optional<Station> findStationById(Integer station_id) {
+        return repository.findStationById(station_id);
+    }
+
     public void deleteStation(int id) {
         repository.deleteById(id);
     }

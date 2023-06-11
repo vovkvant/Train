@@ -46,6 +46,4 @@ public interface ScheduleDBRepository extends JpaRepository<ScheduleDB, Integer>
     List<Train> getTrainToStation(@Param("toStation_id") Integer toStation_id,
                                   @Param("fromDate") LocalDateTime fromTime);
 
-
-
 }

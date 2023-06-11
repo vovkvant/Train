@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,31 +35,33 @@ public class ScheduleService {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
-    private ScheduleDBRepository scheduleDBRepository;
+    private ScheduleDBService scheduleDBService;
 
     @Autowired
-    private StationRepository stationRepository;
+    private StationService stationService;
 
     @Autowired
-    private TrainRepository trainRepository;
+    private TrainService trainService;
 
     Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
     public ScheduleService() {}
     public List<ScheduleDB> getScheduleNative() {
-        return scheduleDBRepository.findAllNative();
+        return scheduleDBService.getScheduleJpql();
     }
     public List<ScheduleDB> getScheduleJpql() {
-        return scheduleDBRepository.findAllJpql();
+        return scheduleDBService.getScheduleJpql();
     }
     public List<Schedule> getScheduleJpa() {
         return scheduleRepository.findAll();
     }
     public Optional<Schedule> getScheduleById(Integer id) { return scheduleRepository.findById(id);}
-
+    public Optional<Schedule> findById(Integer scheduleId) {
+        return scheduleRepository.findById(scheduleId);
+    }
     public List<Schedule> getScheduleByStation(Integer station_id) {
 
-        Station station = stationRepository.findStationById(station_id)
+        Station station = stationService.findStationById(station_id)
                 .orElseThrow(() -> new BusinessException(ExceptionMessage.OBJECT_NOT_FOUND, ErrorCode.OBJECT_NOT_FOUND));
 
         List<Schedule> schedules = scheduleRepository.findScheduleByStation(station);
@@ -75,9 +78,9 @@ public class ScheduleService {
         LocalDateTime localFromTime = LocalDateTime.parse(fromTime, DateTimeFormatter.ofPattern("yyyy-MM-dd@HH:mm:ss"));
         LocalDateTime localToTime = LocalDateTime.parse(toTime, DateTimeFormatter.ofPattern("yyyy-MM-dd@HH:mm:ss"));
 
-        List<Train> trainsFromStation = scheduleDBRepository.getTrainFromStation(fromStation_id, localFromTime, localToTime);
+        List<Train> trainsFromStation = scheduleDBService.getTrainFromStation(fromStation_id, localFromTime, localToTime);
 
-        List<Train> trainsToStation = scheduleDBRepository.getTrainToStation(toStation_id, localFromTime);
+        List<Train> trainsToStation = scheduleDBService.getTrainToStation(toStation_id, localFromTime);
 
         trainsFromStation.retainAll(trainsToStation);
 
@@ -88,9 +91,8 @@ public class ScheduleService {
     public Boolean checkMinutesLeftBeforeTrainTime(Integer minutes,
                                                    Integer train_id,
                                                    Integer station_id) {
-
-        Optional<Train> train = trainRepository.findTrainById(train_id);
-        Optional<Station> station = stationRepository.findStationById(station_id);
+        Optional<Train> train = trainService.findTrainById(train_id);
+        Optional<Station> station = stationService.findStationById(station_id);
 
         boolean response = false;
 
@@ -139,7 +141,6 @@ public class ScheduleService {
             logger.info("Schedule " + scheduleToDelete.toString() + " will be deleted");
             scheduleRepository.deleteById(id);
         }
-
     }
 
     public List<Schedule> getScheduleListByDto(ScheduleDto scheduleDto) {
@@ -152,13 +153,13 @@ public class ScheduleService {
     }
 
     public Station getStationByDto(ScheduleDto scheduleDto) {
-        Station station = stationRepository.findStationById(scheduleDto.getStationId())
+        Station station = stationService.findStationById(scheduleDto.getStationId())
                 .orElseThrow(() -> new BusinessException(ExceptionMessage.OBJECT_NOT_FOUND, ErrorCode.OBJECT_NOT_FOUND));
         return station;
     }
 
     public Train getTrainByDto(ScheduleDto scheduleDto) {
-        Train train = trainRepository.findTrainById(scheduleDto.getTrainId())
+        Train train = trainService.findTrainById(scheduleDto.getTrainId())
                 .orElseThrow(() -> new BusinessException(ExceptionMessage.OBJECT_NOT_FOUND, ErrorCode.OBJECT_NOT_FOUND));
         return train;
     }
