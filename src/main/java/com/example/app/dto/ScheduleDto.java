@@ -8,6 +8,7 @@ import jdk.jfr.DataAmount;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 
 @Data
 @Builder
+@ToString
 public class ScheduleDto {
 
     @NotNull

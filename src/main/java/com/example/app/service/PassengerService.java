@@ -3,7 +3,11 @@ package com.example.app.service;
 import com.example.app.dto.PassengerDto;
 import com.example.app.entity.Passenger;
 import com.example.app.entity.Schedule;
+import com.example.app.error.ExceptionMessage;
+import com.example.app.error.exception.BusinessException;
 import com.example.app.repository.PassengerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,9 @@ public class PassengerService {
 
     @Autowired
     private PassengerRepository repository;
+
+    Logger logger = LoggerFactory.getLogger(ScheduleService.class);
+
     public PassengerService() {}
     public List<Passenger> findAllPassengers() { return repository.findAll(); }
     public Passenger findPassengerById(int id) {
@@ -41,8 +48,8 @@ public class PassengerService {
                     .build();
             return repository.save(passenger);
         } else {
-            // добавить исключение
-            return passengersDB.get(1);
+            logger.warn("Passenger with name " + name + " and surname " + surname + " and birthday " + birthDate + " already exists in database");
+            return passengersDB.get(0);
         }
     }
     public List<Passenger> findPassengerByNameAndSurnameAndBirthDate(String name, String surname, CharSequence birthDate) {
@@ -54,6 +61,7 @@ public class PassengerService {
         return repository.findPassengerByNameAndSurnameAndBirthDate(name, surname, birthDate);
     }
     public void deletePassenger(int id) {
+        repository.findById(id).orElseThrow(() -> new BusinessException(ExceptionMessage.OBJECT_ALREADY_DELETED));
         repository.deleteById(id);
     }
 }

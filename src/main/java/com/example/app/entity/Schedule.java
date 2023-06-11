@@ -14,6 +14,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Getter
 @Table
+@ToString
 public class Schedule {
 
     @Id

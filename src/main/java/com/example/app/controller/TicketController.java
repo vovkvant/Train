@@ -6,6 +6,9 @@ import com.example.app.repository.TicketRepository;
 import com.example.app.service.TicketService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Optional;
+
 @RestController
 public class TicketController {
 
@@ -27,5 +30,15 @@ public class TicketController {
                                           @RequestParam Integer end_station_id,
                                           @RequestParam CharSequence arrivalTime) {
         ticketService.buyTicket(passengerDto, scheduleId, end_station_id, arrivalTime);
+    }
+
+    @GetMapping("/ticket/{id}")
+    Optional<Ticket> findTicketById(@PathVariable Integer id) {
+        return ticketService.findTicketById(id);
+    }
+
+    @DeleteMapping("/ticket/{id}")
+    void deletTicketById(@PathVariable Integer id) {
+        ticketService.deletTicketById(id);
     }
 }
