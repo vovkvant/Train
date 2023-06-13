@@ -24,6 +24,11 @@ public class TrainService {
 
     public TrainService() {
     }
+
+    public TrainService(TrainRepository repository) {
+        this.repository = repository;
+    }
+
     public List<Train> findAllTrains() {
         return repository.findAll();
     }

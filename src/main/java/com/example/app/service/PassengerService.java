@@ -27,6 +27,7 @@ public class PassengerService {
     Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
     public PassengerService() {}
+    public PassengerService(PassengerRepository repository) {this.repository = repository;}
     public List<Passenger> findAllPassengers() { return repository.findAll(); }
     public Passenger findPassengerById(int id) {
         return repository.findPassengerById(id);

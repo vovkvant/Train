@@ -4,6 +4,7 @@ import com.example.app.dto.ScheduleDto;
 import com.example.app.entity.*;
 import com.example.app.error.ExceptionMessage;
 import com.example.app.error.exception.BusinessException;
+import com.example.app.repository.ScheduleDBRepository;
 import com.example.app.repository.ScheduleRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,17 @@ public class ScheduleService {
     Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
     public ScheduleService() {}
+
+    public ScheduleService(ScheduleRepository scheduleRepository,
+                           ScheduleDBService scheduleDBService,
+                           StationService stationService,
+                           TrainService trainService) {
+        this.scheduleRepository = scheduleRepository;
+        this.scheduleDBService = scheduleDBService;
+        this.stationService = stationService;
+        this.trainService = trainService;
+    }
+
     public List<ScheduleDB> getScheduleNative() {
         return scheduleDBService.getScheduleJpql();
     }
